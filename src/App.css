@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .outline-container-wrapper {
+    width: calc(100% - 38px);
+    max-width: 999px;
+    height: calc(100% - 38px);
+    margin: 0 auto;
+    box-shadow: 0px 6px 18px rgb(11 20 26 / 5%);
+    padding: 0 30px;
+    letter-spacing: 0.5px;
+    min-height: 100vh;
+  }
+
+  .header-card-container-wrapper {
+    background: aliceblue;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    height: 100px;
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: rgba(0, 72, 124, 0.06) 0px 5px 10px;
+  }
+}

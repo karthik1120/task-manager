@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .custom-card-component {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(228, 231, 234);
+    box-shadow: rgba(0, 72, 124, 0.06) 0px 5px 10px !important;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+}
