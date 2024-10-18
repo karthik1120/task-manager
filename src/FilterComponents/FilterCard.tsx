@@ -1,10 +1,25 @@
-import { SettingsIcon, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import ModalComponent from '@/TaskComponents/ModalComponent/ModalComponent'
-import { useDebounce } from './useDebounce'
-
-const FilterCard = ({
+interface TaskInterface {
+  title: string
+  description: string
+  dueDate?: string | object
+  priority: string
+  status: string
+}
+interface FilterCardProps {
+  showModal: boolean
+  setShowModal: (show: boolean) => boolean
+  tasks: TaskInterface[] // You can replace 'any' with a more specific type for tasks
+  setTask: (tasks: TaskInterface[]) => TaskInterface[] // Adjust as needed based on your task structure
+  isCompleted: boolean
+  setIsCompleted: (isCompleted: boolean) => boolean
+  searchInput: string
+  setSearchInput: (input: string) => string
+}
+const FilterCard: React.FC<FilterCardProps> = ({
   showModal,
   setShowModal,
   tasks,
@@ -45,7 +60,7 @@ const FilterCard = ({
             }
             className="ml-8 border-none"
             variant={'secondary'}
-            onClick={() => setIsCompleted(prev => !prev)}
+            onClick={() => setIsCompleted((prev: boolean) => !prev)}
           >
             Status: Completed
           </Button>

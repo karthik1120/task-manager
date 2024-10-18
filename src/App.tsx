@@ -50,7 +50,8 @@ function App() {
         </div>
         <div className="w-11/12 text-2xl font-bold">
           completed tasks:
-          {tasks.filter(i => i.status === 'completed').length || 0}
+          {tasks.filter((i: TaskInterface) => i.status === 'completed')
+            .length || 0}
         </div>
       </div>
       <FilterCard
