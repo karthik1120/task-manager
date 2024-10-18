@@ -6,7 +6,7 @@ export const TaskManagerSchema = z.object({
   description: z.string().min(50, {
     message: 'please enter valid description with minimum 50 character',
   }),
-  dueDate: z.date(),
+  dueDate: z.any({ message: 'please select a date' }),
   priority: z.string().min(1, {
     message: 'Please select any one priority.',
   }),

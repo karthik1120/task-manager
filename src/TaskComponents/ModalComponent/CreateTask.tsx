@@ -1,21 +1,40 @@
-import React from 'react';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { TaskManagerSchema } from '@/schema';
-import { Button } from '@/components/ui/button';
-import { v4 as uuidv4 } from 'uuid';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import React from 'react'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { TaskManagerSchema } from '@/schema'
+import { Button } from '@/components/ui/button'
+import { v4 as uuidv4 } from 'uuid'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns'
+import { CalendarIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -27,30 +46,30 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
       priority: edit ? individualTask?.priority : '',
       status: edit ? individualTask?.status : '',
     },
-  });
+  })
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    console.log(values)
     if (edit) {
-      const editedValue = task.map((i) => {
+      const editedValue = task.map(i => {
         if (i.id === individualTask.id) {
           return {
             id: i.id,
             ...values,
-          };
+          }
         } else {
-          return i;
+          return i
         }
-      });
-      setTask(editedValue);
+      })
+      setTask(editedValue)
     } else {
-      const updatedValue = [...task, { id: uuidv4(), ...values }];
-      setTask(updatedValue);
+      const updatedValue = [...task, { id: uuidv4(), ...values }]
+      setTask(updatedValue)
     }
-    setOpenModal(false);
+    setOpenModal(false)
   }
   return (
     <Form {...form}>
@@ -77,7 +96,10 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type your description here." {...field} />
+                <Textarea
+                  placeholder="Type your description here."
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -95,7 +117,11 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button variant={'outline'}>
-                      {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+                      {field.value ? (
+                        format(field.value, 'PPP')
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -105,7 +131,7 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date('2024-09-01')}
+                    disabled={date => date < new Date('2024-09-01')}
                   />
                 </PopoverContent>
               </Popover>
@@ -121,7 +147,11 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
             <FormItem>
               <FormLabel>Priority</FormLabel>
               <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  {...field}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a priority" />
                   </SelectTrigger>
@@ -146,7 +176,11 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
             <FormItem>
               <FormLabel>Status</FormLabel>
               <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  {...field}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -169,7 +203,7 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
         </div>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default CreateTask;
+export default CreateTask

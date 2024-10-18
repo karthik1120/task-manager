@@ -31,15 +31,20 @@ const MyTaskCard = ({ task, setTask }) => {
     <Fragment>
       <div className="grid grid-row-column-container gap-8">
         {task.map(taskData => {
-          const getDate = new Date(taskData.dueDate).toISOString().slice(0, 10)
+          const getDate =
+            (taskData.dueDate &&
+              new Date(taskData.dueDate).toISOString().slice(0, 10)) ||
+            ''
           return (
             <Card
               key={taskData.id}
-              className="grid rounded-xl border bg-card text-card-foreground shadow custom-card-component transition-all hover:scale-105"
+              className="break-all grid rounded-xl border bg-card text-card-foreground shadow custom-card-component transition-all hover:scale-105"
             >
               <CardTitle className="font-bold text-xl py-5 px-6 capitalize">
                 {taskData.title}
-                <CardDescription>Due Date: {getDate}</CardDescription>
+                {taskData.dueDate && (
+                  <CardDescription>Due Date: {getDate}</CardDescription>
+                )}
               </CardTitle>
 
               <CardContent className="text-sm overflow-hidden break-words">
