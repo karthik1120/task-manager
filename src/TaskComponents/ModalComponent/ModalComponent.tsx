@@ -10,10 +10,16 @@ import {
 } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import CreateTask from './CreateTask';
+import { useState } from 'react';
 
-function ModalComponent() {
+function ModalComponent({ showModal, setShowModal, task, setTask, type, individualTask, setIndividualTask }) {
   return (
-    <Dialog>
+    <Dialog
+      open={showModal}
+      onOpenChange={(val) => {
+        setShowModal(val);
+        setIndividualTask({});
+      }}>
       <DialogTrigger asChild>
         <Button className="bg-blue-400">
           <Plus />
@@ -22,12 +28,18 @@ function ModalComponent() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Task</DialogTitle>
+          <DialogTitle>{type == 'edit' ? 'Edit' : 'Create'} Task</DialogTitle>
         </DialogHeader>
         <div>
-          <CreateTask />
+          <CreateTask
+            setOpenModal={setShowModal}
+            setTask={setTask}
+            edit={type == 'edit' ? true : false}
+            individualTask={individualTask}
+            task={task}
+          />
         </div>
-        <DialogFooter className="sm:justify-end">
+        {/* <DialogFooter className="sm:justify-end">
           <Button type="button" variant="secondary">
             submit
           </Button>
@@ -36,7 +48,7 @@ function ModalComponent() {
               Close
             </Button>
           </DialogClose>
-        </DialogFooter>
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

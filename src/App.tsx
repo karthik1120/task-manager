@@ -3,12 +3,27 @@ import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Plus, X } from 'lucide-react';
 import MyTaskCard from './TaskComponents/CardList/MyTaskCard';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import ModalComponent from './TaskComponents/ModalComponent/ModalComponent';
 import { Dialog, DialogTrigger } from './components/ui/dialog';
+import useLocalStorage from './TaskComponents/useLocalStorage';
+
+interface TaskInterface {
+  title: string;
+  description: string;
+  dueDate: string;
+  priority: string;
+  status: string;
+}
 
 function App() {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [tasks, setTask] = useLocalStorage('taskData', []);
+
+  console.log('tasks', tasks);
+  // useEffect(() => {
+  //   localStorage.setItem('tasks', JSON.stringify(tasks));
+  // }, [tasks]);
 
   return (
     <div className="outline-container-wrapper">
@@ -30,10 +45,10 @@ function App() {
               Task Status: Completed
             </Button>
           </div>
-          <ModalComponent />
+          <ModalComponent showModal={showModal} setShowModal={setShowModal} task={tasks} setTask={setTask} />
         </div>
       </section>
-      <MyTaskCard />
+      <MyTaskCard task={tasks} setTask={setTask} />
     </div>
   );
 }

@@ -5,16 +5,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { TaskManagerSchema } from '@/schema';
+import { Button } from '@/components/ui/button';
+import { v4 as uuidv4 } from 'uuid';
 
-const CreateTask = () => {
+const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(TaskManagerSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      dueDate: '',
-      priority: '',
-      status: '',
+      title: edit ? individualTask?.title : '',
+      description: edit ? individualTask?.description : '',
+      dueDate: edit ? individualTask?.dueDate : '',
+      priority: edit ? individualTask?.priority : '',
+      status: edit ? individualTask?.status : '',
     },
   });
 
@@ -23,6 +25,10 @@ const CreateTask = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    const updatedValue = [...task, { id: uuidv4(), ...values }];
+    setTask(updatedValue);
+    setOpenModal(false);
   }
   return (
     <Form {...form}>
@@ -98,6 +104,8 @@ const CreateTask = () => {
             </FormItem>
           )}
         />
+
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
