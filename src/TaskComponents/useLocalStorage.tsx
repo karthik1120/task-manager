@@ -14,7 +14,7 @@ const useLocalStorage = (key, initialValue) => {
     }
   })
 
-  const setValue = value => {
+  const setValue = (value: string) => {
     try {
       setStoredValue(value)
 

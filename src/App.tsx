@@ -1,11 +1,6 @@
 import './App.css'
-import { Button } from './components/ui/button'
-import { Input } from './components/ui/input'
-import { Flashlight, Plus, X } from 'lucide-react'
 import MyTaskCard from './TaskComponents/CardList/MyTaskCard'
-import { Fragment, useEffect, useState } from 'react'
-import ModalComponent from './TaskComponents/ModalComponent/ModalComponent'
-import { Dialog, DialogTrigger } from './components/ui/dialog'
+import { useEffect, useState } from 'react'
 import useLocalStorage from './TaskComponents/useLocalStorage'
 import FilterCard from './FilterComponents/FilterCard'
 import { useDebounce } from './FilterComponents/useDebounce'
@@ -13,7 +8,7 @@ import { useDebounce } from './FilterComponents/useDebounce'
 interface TaskInterface {
   title: string
   description: string
-  dueDate: string
+  dueDate?: string | object
   priority: string
   status: string
 }
@@ -21,11 +16,11 @@ interface TaskInterface {
 function App() {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [tasks, setTask] = useLocalStorage('taskData', [])
-  const [isCompleted, setIsCompleted] = useState(false)
-  const [searchInput, setSearchInput] = useState('')
+  const [isCompleted, setIsCompleted] = useState<boolean>(false)
+  const [searchInput, setSearchInput] = useState<string>('')
 
-  const [filteredTask, setFilteredTask] = useState([])
-  const debounceText = useDebounce(searchInput, 500)
+  const [filteredTask, setFilteredTask] = useState<TaskInterface[]>([])
+  const debounceText = useDebounce(searchInput as string, 500)
 
   useEffect(() => {
     let updatedTask = tasks
@@ -37,7 +32,9 @@ function App() {
       setFilteredTask(updatedTask)
     }
     if (isCompleted) {
-      updatedTask = tasks.filter(task => task.status === 'completed')
+      updatedTask = tasks.filter(
+        (task: TaskInterface) => task.status === 'completed'
+      )
       setFilteredTask(updatedTask)
     }
   }, [debounceText, isCompleted])
