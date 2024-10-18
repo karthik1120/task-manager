@@ -1,8 +1,6 @@
-import React from 'react'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,7 +26,6 @@ import {
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
@@ -48,11 +45,7 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
     },
   })
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
     if (edit) {
       const editedValue = task.map(i => {
         if (i.id === individualTask.id) {
