@@ -4,10 +4,11 @@
 
 @layer components {
   .custom-card-component {
-    background: rgb(255, 255, 255);
-    border: 1px solid rgb(228, 231, 234);
-    box-shadow: rgba(0, 72, 124, 0.06) 0px 5px 10px !important;
-    border-radius: 3px;
     margin-bottom: 10px;
+  }
+
+  .grid-row-column-container {
+    grid-auto-rows: 300px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }

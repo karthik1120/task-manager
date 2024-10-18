@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -7,25 +7,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Plus } from 'lucide-react';
-import CreateTask from './CreateTask';
-import { useState } from 'react';
+} from '@/components/ui/dialog'
+import { Plus } from 'lucide-react'
+import CreateTask from './CreateTask'
 
-function ModalComponent({ showModal, setShowModal, task, setTask, type, individualTask, setIndividualTask }) {
+function ModalComponent({
+  showModal,
+  setShowModal,
+  task,
+  setTask,
+  type,
+  individualTask,
+  setIndividualTask,
+}) {
   return (
     <Dialog
       open={showModal}
-      onOpenChange={(val) => {
-        setShowModal(val);
-        setIndividualTask({});
-      }}>
-      <DialogTrigger asChild>
-        <Button className="bg-blue-400">
-          <Plus />
-          Add Task
-        </Button>
-      </DialogTrigger>
+      onOpenChange={val => {
+        setShowModal(val)
+        setIndividualTask({})
+      }}
+    >
+      {type !== 'edit' && (
+        <DialogTrigger asChild>
+          <Button className="bg-blue-400 outline-0 border-none active:outline-0 hover:bg-blue-400">
+            <Plus />
+            Add Task
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{type == 'edit' ? 'Edit' : 'Create'} Task</DialogTitle>
@@ -39,19 +49,9 @@ function ModalComponent({ showModal, setShowModal, task, setTask, type, individu
             task={task}
           />
         </div>
-        {/* <DialogFooter className="sm:justify-end">
-          <Button type="button" variant="secondary">
-            submit
-          </Button>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export default ModalComponent;
+export default ModalComponent

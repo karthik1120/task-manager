@@ -7,6 +7,15 @@ import { z } from 'zod';
 import { TaskManagerSchema } from '@/schema';
 import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -25,9 +34,22 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-
-    const updatedValue = [...task, { id: uuidv4(), ...values }];
-    setTask(updatedValue);
+    if (edit) {
+      const editedValue = task.map((i) => {
+        if (i.id === individualTask.id) {
+          return {
+            id: i.id,
+            ...values,
+          };
+        } else {
+          return i;
+        }
+      });
+      setTask(editedValue);
+    } else {
+      const updatedValue = [...task, { id: uuidv4(), ...values }];
+      setTask(updatedValue);
+    }
     setOpenModal(false);
   }
   return (
@@ -55,7 +77,7 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Textarea placeholder="Type your description here." {...field} />
               </FormControl>
 
               <FormMessage />
@@ -67,11 +89,26 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
           control={form.control}
           name="dueDate"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>DueDate</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
+            <FormItem className="flex flex-col">
+              <FormLabel>Select a Due Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button variant={'outline'}>
+                      {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date < new Date('2024-09-01')}
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
@@ -84,7 +121,18 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
             <FormItem>
               <FormLabel>Priority</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,16 +144,29 @@ const CreateTask = ({ setOpenModal, task, setTask, individualTask, edit }) => {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>status</FormLabel>
+              <FormLabel>Status</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todo">todo</SelectItem>
+                    <SelectItem value="inprogress">in-progress</SelectItem>
+                    <SelectItem value="completed">completed</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-end" style={{ width: '100%' }}>
+          <Button className="flex justify-end" type="submit">
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );
